@@ -1,3 +1,5 @@
+import org.w3c.dom.ls.LSOutput;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -109,22 +111,7 @@ public class Board {
             }
         });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    frame.setSize(400, 400);
+    frame.setSize(800, 800);
     frame.setVisible(true);
     }
     public static void setAllSquaresWhite() {
@@ -133,5 +120,8 @@ public class Board {
                 q.setBackground(Color.WHITE);
             }
         }
+    }
+    public static Square[][] getPanelArray() {
+        return panelArray;
     }
 }

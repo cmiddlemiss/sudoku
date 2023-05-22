@@ -17,6 +17,8 @@ public class Square extends JPanel{
         isPreSet = false;
         num.setText("");
         this.setOpaque(true);
+        Font font = new Font(Font.SANS_SERIF, 0, 50);
+        num.setFont(font);
         this.add(num);
         this.setFocusable(true);
         this.requestFocus();
@@ -53,6 +55,9 @@ public class Square extends JPanel{
                 if(e.getKeyCode() == KeyEvent.VK_9) {
                     num.setText("9");
                 }
+                if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+                    num.setText("");
+                }
             }
 
             @Override
@@ -60,8 +65,9 @@ public class Square extends JPanel{
         });
         this.setFocusable(true);
         this.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent evt) {;
+            public void mouseClicked(MouseEvent evt) {
                 Board.setAllSquaresWhite();
+                System.out.println(this);
                 if(!isPreSet) {
                     Color purpleTwo = new Color(210, 145, 255);
                     setBackground(purpleTwo);
@@ -85,5 +91,49 @@ public class Square extends JPanel{
     public void setPreSet(boolean bl) {
         isPreSet = bl;
     }
+
+    @Override
+    public String toString() {
+        String square = num.getText();
+        int r = 0;
+        int c = 0;
+        Square[][] squares = Board.getPanelArray();
+        for (int row = 0; row < 9; row++) {
+            for (int col = 0; col < 9; col++) {
+                if (squares[row][col] == s) {
+                    r = row;
+                    c = col;
+                }
+            }
+        }
+        return "Square " + r + c + ", has num " + square;
+    }
+
+    public boolean isValidInput(Square q) {
+        Square[][] panelArrayAgain = Board.getPanelArray();
+        Square[] checkArr;
+        Square[][] panelArrayTwo = new Square[9][9];
+        Square[] checkArrTwo;
+        Square[] checkArrThree;
+        for (Square[] firstSquare: panelArrayAgain) {
+            for (Square s: firstSquare) {
+                if (s == q) {
+                    checkArr = firstSquare;
+                }
+            }
+        }
+        //CHECK NOTES
+        for (int row = 0; row < 9; row++) {
+            int i = 0;
+            for (int col = 0; col < 9; col++) {
+                panelArrayTwo[row][col] = panelArrayAgain[0][4];
+            }
+        }
+        return false;
+    }
+
+
+
+
 
 }
