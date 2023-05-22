@@ -4,23 +4,24 @@ import java.awt.event.*;
 
 
 public class Board {
+    private static Square[][] panelArray = new Square[9][9];
 
 
     public Board() {
         JFrame frame = new JFrame("Sudoku");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        Square[][] panelArray = new Square[9][9];
         //1. Big Grid
         JPanel bigGrid = new JPanel();
         bigGrid.setLayout(new GridLayout(3, 3));
 
         for (int i = 1; i <= 9; i++) {
             JPanel panel = new JPanel(new GridLayout(3, 3));
-            panel.setBorder(BorderFactory.createLineBorder(Color.blue));
+            Color purple = new Color(227, 185, 255);
+            panel.setBorder(BorderFactory.createLineBorder(purple));
             for (int j = 1; j <= 9; j++) {
                 Square smallPanel = new Square();
                 smallPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-                panelArray[i-1][j-1] = smallPanel;
+                panelArray[i - 1][j - 1] = smallPanel;
                 panel.add(smallPanel);
             }
             bigGrid.add(panel);
@@ -37,6 +38,8 @@ public class Board {
         num_diff.add(hard);
         frame.add(num_diff, BorderLayout.SOUTH);
 
+        // Clicking and adding stuff
+
 
         easy.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
@@ -52,6 +55,8 @@ public class Board {
 
                 for (int row = 0; row < 9; row++) {
                     for (int col = 0; col < 9; col++) {
+                        panelArray[row][col].setPreSet(false);
+                        panelArray[row][col].setBackground(Color.WHITE);
                         panelArray[row][col].setNumOG(orig_num[row][col]);
                     }
                 }
@@ -62,7 +67,7 @@ public class Board {
 
         medium.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
-                String[][] orig_num = {{"1", "4", "5", "6", "", "", "", "",""},
+                String[][] orig_num = {{"1", "4", "5", "6", "", "", "", "", ""},
                         {"", "", "", "", "2", "", "9", "", ""},
                         {"", "", "", "", "8", "1", "", "", ""},
                         {"", "", "9", "7", "", "", "", "", ""},
@@ -74,6 +79,8 @@ public class Board {
 
                 for (int row = 0; row < 9; row++) {
                     for (int col = 0; col < 9; col++) {
+                        panelArray[row][col].setPreSet(false);
+                        panelArray[row][col].setBackground(Color.WHITE);
                         panelArray[row][col].setNumOG(orig_num[row][col]);
                     }
                 }
@@ -94,6 +101,8 @@ public class Board {
                         {"", "", "", "", "", "", "", "4", ""}};
                 for (int row = 0; row < 9; row++) {
                     for (int col = 0; col < 9; col++) {
+                        panelArray[row][col].setPreSet(false);
+                        panelArray[row][col].setBackground(Color.WHITE);
                         panelArray[row][col].setNumOG(orig_num[row][col]);
                     }
                 }
@@ -112,7 +121,17 @@ public class Board {
 
 
 
+
+
+
     frame.setSize(400, 400);
     frame.setVisible(true);
+    }
+    public static void setAllSquaresWhite() {
+        for (Square[] s: panelArray) {
+            for(Square q: s) {
+                q.setBackground(Color.WHITE);
+            }
+        }
     }
 }
