@@ -15,6 +15,7 @@ public class Square extends JPanel{
 
     public Square() {
         isPreSet = false;
+        Color purpleTwo = new Color(210, 145, 255);
         num.setText("");
         this.setOpaque(true);
         Font font = new Font(Font.SANS_SERIF, 0, 50);
@@ -30,33 +31,52 @@ public class Square extends JPanel{
                 num.setForeground(Color.BLACK);
                 if(e.getKeyCode() == KeyEvent.VK_1) {
                     num.setText("1");
+                    setBackground(purpleTwo);
+                    isValidInput(s);
                 }
                 if(e.getKeyCode() == KeyEvent.VK_2) {
                     num.setText("2");
+                    setBackground(purpleTwo);
+                    isValidInput(s);
                 }
                 if(e.getKeyCode() == KeyEvent.VK_3) {
                     num.setText("3");
+                    setBackground(purpleTwo);
+                    isValidInput(s);
                 }
                 if(e.getKeyCode() == KeyEvent.VK_4) {
                     num.setText("4");
+                    setBackground(purpleTwo);
+                    isValidInput(s);
                 }
                 if(e.getKeyCode() == KeyEvent.VK_5) {
                     num.setText("5");
+                    setBackground(purpleTwo);
+                    isValidInput(s);
                 }
                 if(e.getKeyCode() == KeyEvent.VK_6) {
                     num.setText("6");
+                    setBackground(purpleTwo);
+                    isValidInput(s);
                 }
                 if(e.getKeyCode() == KeyEvent.VK_7) {
                     num.setText("7");
+                    setBackground(purpleTwo);
+                    isValidInput(s);
                 }
                 if(e.getKeyCode() == KeyEvent.VK_8) {
                     num.setText("8");
+                    setBackground(purpleTwo);
+                    isValidInput(s);
                 }
                 if(e.getKeyCode() == KeyEvent.VK_9) {
                     num.setText("9");
+                    setBackground(purpleTwo);
+                    isValidInput(s);
                 }
                 if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
                     num.setText("");
+                    setBackground(purpleTwo);
                 }
             }
 
@@ -67,11 +87,10 @@ public class Square extends JPanel{
         this.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
                 Board.setAllSquaresWhite();
-                System.out.println(this);
                 if(!isPreSet) {
-                    Color purpleTwo = new Color(210, 145, 255);
                     setBackground(purpleTwo);
                     s.requestFocus();
+                    isValidInput(s);
                 }
             }
         });
@@ -91,6 +110,9 @@ public class Square extends JPanel{
     public void setPreSet(boolean bl) {
         isPreSet = bl;
     }
+    public int getNum() {
+        return Integer.parseInt(this.num.getText());
+    }
 
     @Override
     public String toString() {
@@ -109,31 +131,111 @@ public class Square extends JPanel{
         return "Square " + r + c + ", has num " + square;
     }
 
-    public boolean isValidInput(Square q) {
+    public void isValidInput(Square q) {
+        if(q.num.getText().equals("")) {
+            return;
+        }
+    //CHECKS SQUARES
         Square[][] panelArrayAgain = Board.getPanelArray();
-        Square[] checkArr;
+        Square[] checkArr = new Square[9];
         Square[][] panelArrayTwo = new Square[9][9];
-        Square[] checkArrTwo;
-        Square[] checkArrThree;
-        for (Square[] firstSquare: panelArrayAgain) {
-            for (Square s: firstSquare) {
+        Square[] checkArrTwo = new Square[9];
+        Square[] checkArrThree = new Square[9];
+        boolean notNull = false;
+        boolean notNullTwo = false;
+        boolean notNullThree = false;
+
+        for (Square[] firstSquare : panelArrayAgain) {
+            for (Square s : firstSquare) {
                 if (s == q) {
                     checkArr = firstSquare;
+                    notNull = true;
                 }
             }
         }
-        //CHECK NOTES
-        for (int row = 0; row < 9; row++) {
+        //ORGANIZES ROWS AND COLUMNS?
+        int shift = -3;
+        for (int j = 0; j < 3; j++) {
             int i = 0;
-            for (int col = 0; col < 9; col++) {
-                panelArrayTwo[row][col] = panelArrayAgain[0][4];
+            shift += 3;
+            for (int row = 0; row < 3; row++) {
+                for (int col = 0; col < 3; col++) {
+                    panelArrayTwo[j][i] = panelArrayAgain[row][col + shift];
+                    i++;
+                }
             }
         }
-        return false;
+        shift = -3;
+        for (int j = 3; j < 6; j++) {
+            int i = 0;
+            shift += 3;
+            for (int row = 3; row < 6; row++) {
+                for (int col = 0; col < 3; col++) {
+                    panelArrayTwo[j][i] = panelArrayAgain[row][col + shift];
+                    i++;
+                }
+            }
+        }
+        shift = -3;
+        for (int j = 6; j < 9; j++) {
+            int i = 0;
+            shift += 3;
+            for (int row = 6; row < 9; row++) {
+                for (int col = 0; col < 3; col++) {
+                    panelArrayTwo[j][i] = panelArrayAgain[row][col + shift];
+                    i++;
+                }
+            }
+        }
+        //CHECKS ROWS
+        for (Square[] firstRow : panelArrayTwo) {
+            for (Square s : firstRow) {
+                if (s == q) {
+                    checkArrTwo = firstRow;
+                    notNullTwo = true;
+                }
+            }
+        }
+        //CHECKS COLUMNS
+        int columnNumber = 0;
+        for (int col = 0; col < 9; col++) {
+            for(int row = 0; row < 9; row++) {
+                if (panelArrayTwo[row][col] == q) {
+                    columnNumber = col;
+                    notNullThree = true;
+                }
+            }
+        }
+        for(int row = 0; row < 9; row++) {
+            checkArrThree[row] = panelArrayTwo[row][columnNumber];
+        }
+        //CHECKING CHECK ARRAYS
+        Color red = new Color(224, 76, 76);
+        for(int i = 0; i < 9; i++) {
+            if(!checkArr[i].num.getText().equals("")) {
+                if (notNull && q.getNum() == checkArr[i].getNum() && q != checkArr[i]) {
+                    setBackground(red);
+                }
+            }
+            if(!checkArrTwo[i].num.getText().equals("")) {
+                if (notNullTwo && q.getNum() == checkArrTwo[i].getNum() && q != checkArrTwo[i]) {
+                    setBackground(red);
+                }
+            }
+            if(!checkArrThree[i].num.getText().equals("")) {
+                if (notNullThree && q.getNum() == checkArrThree[i].getNum() && q != checkArrThree[i]) {
+                    setBackground(red);
+                }
+            }
+        }
     }
 
 
-
-
-
 }
+
+
+
+
+
+
+
